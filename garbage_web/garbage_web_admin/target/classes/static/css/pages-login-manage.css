@@ -4,7 +4,7 @@
     vertical-align: middle;
     display: table-cell;
     padding-left: 100px;
-    background:url("../img/logo-bg.jpg") 370px  center   no-repeat #13111E;
+    background: url("../img/logo-bg.jpg") 370px center no-repeat #13111E;
 }
 
 .loginmanage .manage-title {
@@ -42,20 +42,20 @@ span.loginname {
     margin-bottom: 16px
 }
 
-.sui-nav.nav-tabs.tab-wraped>li {
+.sui-nav.nav-tabs.tab-wraped > li {
     width: 50%
 }
 
-.sui-nav.nav-tabs.tab-wraped>li.active>a {
+.sui-nav.nav-tabs.tab-wraped > li.active > a {
     padding-top: 0;
     border-top: 1px solid #28a3ef
 }
 
-.sui-nav.nav-tabs.tab-wraped>li>a {
+.sui-nav.nav-tabs.tab-wraped > li > a {
     padding: 0
 }
 
-.sui-nav.nav-tabs.tab-wraped>li.active h3 {
+.sui-nav.nav-tabs.tab-wraped > li.active h3 {
     color: #c8111a
 }
 
@@ -67,7 +67,7 @@ span.loginname {
     *float: left
 }
 
-.sui-form input[type=text],.sui-form input[type=password] {
+.sui-form input[type=text], .sui-form input[type=password] {
     height: 23px
 }
 
@@ -168,7 +168,7 @@ span.loginname {
     width: 100%;
     height: 100%;
     font-size: 13px;
-    font-family: 'Microsoft Yahei',serif;
+    font-family: 'Microsoft Yahei', serif;
     color: #787878;
     line-height: 38px;
     text-align: center;

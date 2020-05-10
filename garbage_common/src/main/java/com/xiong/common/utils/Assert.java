@@ -9,10 +9,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
-/**
- * @author <a herf="mailto:wuqi@terminus.io">xunyard</a>
- * @date 2019-02-15
- */
 @Slf4j
 public class Assert {
 
