@@ -9,5 +9,22 @@
         `garbage`
     </sql>
 
+    <sql id="cols_all">
+        `id`, `name`, `city_id`, `category_id`, `created_at`, `updated_at`
+    </sql>
+
+    <select id="paging" resultType="com.xiong.garbage.model.Garbage">
+        SELECT
+        <include refid="cols_all"/>
+        FROM
+        <include refid="tb"/>
+        <where>
+            <if test="cityId != null">AND `city_id` = #{cityId}</if>
+            <if test="categoryId != null">AND `category_id` = #{categoryId}</if>
+            <if test="name != null">AND `name` like CONCAT('%', #{name}, '%')</if>
+        </where>
+        ORDER BY `updated_at`DESC
+    </select>
+
 
 </mapper>

@@ -13,8 +13,9 @@ import com.xiong.garbage.model.converter.GarbageApiConverter;
 import com.xiong.garbage.server.GarbageServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.entity.Example;
+import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -29,11 +30,13 @@ public class GarbageServerImpl implements GarbageServer {
     public Response<PageResult<GarbageInfo>> paging(GarbagePagingRequest request) {
         try {
             PageHelper.startPage(request.getPage(), request.getPageSize());
-            Example example = new Example(Garbage.class);
-            Example.Criteria criteria = example.createCriteria();
-            criteria.andEqualTo("cityId", request.getCityId());
-            criteria.andEqualTo("categoryId", request.getCategoryId());
-            Page<Garbage> page = (Page<Garbage>) garbageMapper.selectByExample(example);
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("cityId", request.getCityId());
+            map.put("categoryId", request.getCategoryId());
+            if (!StringUtils.isEmpty(request.getName().trim())) {
+                map.put("name", request.getName());
+            }
+            Page<Garbage> page = (Page<Garbage>) garbageMapper.paging(map);
             List<GarbageInfo> garbageInfos = AssembleDataUtils.list2list(page.getResult(), garbageApiConverter::get);
             return Response.ok(PageResult.paging(page.getTotal(), garbageInfos));
         } catch (Exception e) {

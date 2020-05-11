@@ -26,7 +26,13 @@ new Vue({
             let obj = {};
             obj.page = page;
             obj.pageSize = this.pageSize;
+            if (this.searchEntity.cityId == -1) {
+                this.searchEntity.cityId = '';
+            }
             obj.cityId = this.searchEntity.cityId;
+            if (this.searchEntity.categoryId == -1) {
+                this.searchEntity.categoryId = '';
+            }
             obj.categoryId = this.searchEntity.categoryId;
             obj.name = this.searchEntity.name;
             axios.get("/api/admin/garbage/paging", {

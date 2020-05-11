@@ -24,6 +24,12 @@
 
         <dependency>
             <groupId>com.xiong</groupId>
+            <artifactId>garbage_api_city</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.xiong</groupId>
             <artifactId>garbage_common</artifactId>
             <version>${parent.version}</version>
         </dependency>

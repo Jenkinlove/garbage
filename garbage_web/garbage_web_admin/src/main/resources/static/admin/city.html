@@ -35,6 +35,7 @@
                                 data-target="#editModal"><i class="fa fa-file-o"></i> 新建
                         </button>
                         <button type="button" class="btn btn-default"
+                                @click="deleteCities()"
                                 title="删除"><i
                                 class="fa fa-trash-o"></i> 删除
                         </button>
@@ -44,9 +45,10 @@
                     </div>
                     <div class="box-tools pull-right">
                         <div class="has-feedback" style="margin-left: 350px; font-size: 16px">
-                            城市名称: <input type="text" class="form-control"
+                            城市名称: <input v-model="searchEntity.name" type="text"
+                                         class="form-control"
                         >
-                            <input class="btn btn-default" type="button"
+                            <input @click="pageHandler(1)" class="btn btn-default" type="button"
                                    value="查询">
                         </div>
                     </div>
@@ -67,34 +69,13 @@
                 </thead>
                 <tbody>
 
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>1</td>
-                    <td>杭州</td>
+                <tr v-for="cityItem in cityList">
+                    <td><input @click="selectedCity($event, cityItem.id)" type="checkbox"></td>
+                    <td>{{cityItem.id}}</td>
+                    <td>{{cityItem.name}}</td>
                     <td class="text-center">
                         <button type="button"
-                                class="btn bg-olive btn-xs" data-toggle="modal"
-                                data-target="#editModal">修改
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>2</td>
-                    <td>上海</td>
-                    <td class="text-center">
-                        <button type="button"
-                                class="btn bg-olive btn-xs" data-toggle="modal"
-                                data-target="#editModal">修改
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>3</td>
-                    <td>北京</td>
-                    <td class="text-center">
-                        <button type="button"
+                                @click="findCityById(cityItem.id)"
                                 class="btn bg-olive btn-xs" data-toggle="modal"
                                 data-target="#editModal">修改
                         </button>
@@ -121,22 +102,23 @@
                     <button type="button" class="close" data-dismiss="modal"
                             aria-hidden="true">×
                     </button>
-                    <h3 id="myModalLabel">城市编辑</h3>
+                    <h3 id="myModalLabel">{{city.id != null ? '城市编辑':'城市新增'}}</h3>
                 </div>
                 <div class="modal-body">
                     <table class="table table-bordered table-striped" width="800px">
                         <tr>
                             <td>城市名称</td>
-                            <td><input class="form-control" placeholder="城市名称"></td>
+                            <td><input v-model="city.name" class="form-control"
+                                       placeholder="城市名称"></td>
                         </tr>
 
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-success" data-dismiss="modal"
+                    <button @click="toEditCity()" class="btn btn-success" data-dismiss="modal"
                             aria-hidden="true">保存
                     </button>
-                    <button class="btn btn-default" data-dismiss="modal"
+                    <button @click="close()" class="btn btn-default" data-dismiss="modal"
                             aria-hidden="true">关闭
                     </button>
                 </div>
