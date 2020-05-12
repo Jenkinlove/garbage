@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @FeignClient(name = "category-client")
 public interface CategoryFeignClient {
     @GetMapping("/api/category/paging")
@@ -28,4 +30,10 @@ public interface CategoryFeignClient {
 
     @PostMapping("/api/category/delete")
     Boolean delete(@SpringQueryMap CategoryDeleteRequest request);
+
+    @GetMapping("/api/category/all")
+    List<CategoryInfo> findAll();
+
+    @GetMapping("/api/category/city")
+    List<CategoryInfo> findByCityId(@RequestParam("cityId") Long cityId);
 }

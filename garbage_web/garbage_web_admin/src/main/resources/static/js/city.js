@@ -84,6 +84,7 @@ new Vue({
                 if (response.data.success) {
                     _this.selected = [];
                     _this.pageHandler(_this.page);
+                    window.location.reload();
                 } else {
                     alert(response.data.error);
                 }

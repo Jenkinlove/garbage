@@ -8,6 +8,8 @@ import com.xiong.category.api.response.CategoryInfo;
 import com.xiong.common.utils.PageResult;
 import com.xiong.common.utils.Response;
 
+import java.util.List;
+
 public interface CategoryServer {
     Response<PageResult<CategoryInfo>> paging(CategoryPagingRequest request);
 
@@ -18,4 +20,8 @@ public interface CategoryServer {
     Response<CategoryInfo> findById(Long id);
 
     Response<Boolean> delete(CategoryDeleteRequest request);
+
+    Response<List<CategoryInfo>> findAll();
+
+    Response<List<CategoryInfo>> findByCityId(Long cityId);
 }

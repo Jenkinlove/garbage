@@ -17,6 +17,7 @@ import com.xiong.common.utils.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
 import java.util.List;
@@ -80,6 +81,33 @@ public class CategoryServerImpl implements CategoryServer {
         } catch (Exception e) {
             e.printStackTrace();
             return Response.fail("category.delete.fail");
+        }
+    }
+
+    @Override
+    public Response<List<CategoryInfo>> findAll() {
+        try {
+            List<Category> categories = categoryMapper.selectAll();
+            List<CategoryInfo> categoryInfos = AssembleDataUtils.list2list(categories, categoryApiConverter::get);
+            return Response.ok(categoryInfos);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.fail("category.find.fail");
+        }
+    }
+
+    @Override
+    public Response<List<CategoryInfo>> findByCityId(Long cityId) {
+        try {
+            Example example = new Example(Category.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo("cityId", cityId);
+            List<Category> categories = categoryMapper.selectByExample(example);
+            List<CategoryInfo> categoryInfos = AssembleDataUtils.list2list(categories, categoryApiConverter::get);
+            return Response.ok(categoryInfos);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.fail("category.find.fail");
         }
     }
 

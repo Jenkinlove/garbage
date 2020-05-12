@@ -12,6 +12,8 @@ import com.xiong.common.utils.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/category")
 public class CategoryController {
@@ -47,6 +49,18 @@ public class CategoryController {
     @GetMapping("/single")
     public CategoryInfo findById(@RequestParam("id") Long id) {
         Response<CategoryInfo> response = categoryServer.findById(id);
+        return Assert.take(response);
+    }
+
+    @GetMapping("/all")
+    public List<CategoryInfo> findAll() {
+        Response<List<CategoryInfo>> response = categoryServer.findAll();
+        return Assert.take(response);
+    }
+
+    @GetMapping("/city")
+    public List<CategoryInfo> findByCityId(@RequestParam("cityId") Long cityId) {
+        Response<List<CategoryInfo>> response = categoryServer.findByCityId(cityId);
         return Assert.take(response);
     }
 

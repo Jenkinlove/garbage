@@ -8,13 +8,12 @@ new Vue({
 
         garbageList: [],
 
-        searchEntity: {
-            cityId: '',
-            categoryId: '',
-            name: ''
-        },
-        cityList: [{id: 1, name: '杭州'}, {id: 2, name: '上海'}],
-        categoryList: [{id: 1, name: '有害垃圾'}, {id: 2, name: '湿垃圾'}],
+        searchEntity: {},
+        cityList: [],
+        cityMap: {},
+
+        categoryList: [],
+        categoryMap: {},
 
         selectIds: [],
 
@@ -51,6 +50,63 @@ new Vue({
                 console.log(reason);
             })
         },
+        getAllCities: function () {
+            let _this = this;
+            axios.get("/api/admin/city/all").then(function (response) {
+                if (response.data.success) {
+                    _this.cityList = response.data.result;
+                    for (let i = 0; i < response.data.result.length; i++) {
+                        let city = response.data.result[i];
+                        _this.cityMap[city.id] = city.name;
+                    }
+                } else {
+                    alert(response.data.error);
+                }
+            })
+        },
+        getAllCategories: function () {
+            let _this = this;
+            axios.get("/api/admin/category/all").then(function (response) {
+                if (response.data.success) {
+                    _this.categoryList = response.data.result;
+                    for (let i = 0; i < response.data.result.length; i++) {
+                        let category = response.data.result[i];
+                        _this.categoryMap[category.id] = category.name;
+                    }
+                } else {
+                    alert(response.data.error);
+                }
+            })
+        },
+        getCategoriesByCityId: function () {
+            if (this.searchEntity.cityId == null || this.searchEntity.cityId == -1) {
+                this.getAllCategories();
+                return;
+            }
+            let _this = this;
+            axios.get("/api/admin/category/city?cityId=" + this.searchEntity.cityId).then(function (response) {
+                if (response.data.success) {
+                    _this.categoryList = response.data.result;
+                } else {
+                    alert(response.data.error);
+                }
+            })
+
+        },
+        getCategoryByCityIdForEdit: function () {
+            if (this.garbage.cityId == null || this.garbage.cityId == -1) {
+                this.getAllCategories();
+                return;
+            }
+            let _this = this;
+            axios.get("/api/admin/category/city?cityId=" + this.garbage.cityId).then(function (response) {
+                if (response.data.success) {
+                    _this.categoryList = response.data.result;
+                } else {
+                    alert(response.data.error);
+                }
+            })
+        },
         deleteSelection: function (event, id) {
             /*监听复选框按钮的点击*/
             //复选框选中
@@ -65,9 +121,74 @@ new Vue({
         },
         close: function () {
             this.garbage = {};
+        },
+        toEditGarbage: function () {
+            if (this.garbage.name == null) {
+                alert("请填写垃圾的名称");
+                return;
+            }
+            if (this.garbage.cityId == null || this.garbage.cityId == -1) {
+                alert("请选择城市");
+                return;
+            }
+            if (this.garbage.categoryId == null || this.garbage.categoryId == -1) {
+                alert("请选择垃圾的分类");
+                return;
+            }
+            let url;
+            if (this.garbage.id == null) {
+                //新建
+                url = "/api/admin/garbage/create";
+            } else {
+                //更新
+                url = "/api/admin/garbage/update";
+            }
+            let _this = this;
+            axios.post(url, _this.garbage).then(function (response) {
+                if (response.data.success) {
+                    _this.garbage = {};
+                    _this.pageHandler(_this.page);
+                } else {
+                    alert(response.data.error);
+                }
+            }).catch(function (reason) {
+                console.log(reason);
+            })
+        },
+        findById: function (id) {
+            let _this = this;
+            axios.get("/api/admin/garbage/single?id=" + id).then(function (response) {
+                if (response.data.success) {
+                    _this.garbage = response.data.result;
+                    _this.getCategoryByCityIdForEdit();
+                } else {
+                    alert(response.data.error);
+                }
+            }).catch(function (reason) {
+                console.log(reason);
+            })
+        },
+        deleteGarbage: function () {
+            if (this.selectIds.length === 0) {
+                alert("请选择一个或多个要删除的垃圾");
+                return;
+            }
+            let _this = this;
+            axios.post("/api/admin/garbage/delete", {ids: _this.selectIds}).then(function (response) {
+                if (response.data.success) {
+                    _this.selectIds = [];
+                    window.location.reload();
+                } else {
+                    alert(response.data.error);
+                }
+            }).catch(function (reason) {
+                console.log(reason);
+            })
         }
     },
     created: function () {
         this.pageHandler(1);
+        this.getAllCities();
+        this.getAllCategories();
     }
 });

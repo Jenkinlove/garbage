@@ -148,6 +148,7 @@ new Vue({
                 if (response.data.success) {
                     _this.selectedCategories = [];
                     _this.pageHandler(_this.page);
+                    window.location.reload();
                 } else {
                     alert(response.data.error);
                 }

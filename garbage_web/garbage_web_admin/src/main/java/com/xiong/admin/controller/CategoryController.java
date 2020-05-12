@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/admin/category")
 public class CategoryController {
@@ -76,6 +78,31 @@ public class CategoryController {
             }
             CategoryInfo categoryInfo = categoryFeignClient.findById(id);
             return Response.ok(categoryInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.fail("category.find.fail");
+        }
+    }
+
+    @GetMapping("/all")
+    public Response<List<CategoryInfo>> findAll() {
+        try {
+            List<CategoryInfo> categoryInfos = categoryFeignClient.findAll();
+            return Response.ok(categoryInfos);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.fail("category.find.fail");
+        }
+    }
+
+    @GetMapping("/city")
+    public Response<List<CategoryInfo>> findByCityId(Long cityId) {
+        try {
+            if (StringUtils.isEmpty(cityId)) {
+                throw new ServiceException("city.id.is.null");
+            }
+            List<CategoryInfo> categoryInfos = categoryFeignClient.findByCityId(cityId);
+            return Response.ok(categoryInfos);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.fail("category.find.fail");
