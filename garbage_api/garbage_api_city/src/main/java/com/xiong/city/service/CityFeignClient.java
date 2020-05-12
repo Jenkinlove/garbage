@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @FeignClient(name = "city-client")
 public interface CityFeignClient {
 
@@ -32,4 +34,7 @@ public interface CityFeignClient {
 
     @PostMapping("/api/city/delete")
     Boolean delete(@SpringQueryMap CityDeleteRequest request);
+
+    @GetMapping("/api/city/all")
+    List<CityInfo> findAll();
 }

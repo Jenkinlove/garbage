@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/admin/city")
 public class CityController {
@@ -28,6 +30,17 @@ public class CityController {
         } catch (Exception e) {
             e.printStackTrace();
             return Response.fail("city.paging.fail");
+        }
+    }
+
+    @GetMapping("/all")
+    public Response<List<CityInfo>> getAllCities() {
+        try {
+            List<CityInfo> cityInfos = cityFeignClient.findAll();
+            return Response.ok(cityInfos);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.fail("city.find.fail");
         }
     }
 

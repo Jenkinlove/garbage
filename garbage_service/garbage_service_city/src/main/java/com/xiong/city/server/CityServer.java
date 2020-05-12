@@ -8,6 +8,8 @@ import com.xiong.city.api.response.CityInfo;
 import com.xiong.common.utils.PageResult;
 import com.xiong.common.utils.Response;
 
+import java.util.List;
+
 public interface CityServer {
     Response<PageResult<CityInfo>> paging(CityPagingRequest request);
 
@@ -20,4 +22,6 @@ public interface CityServer {
     Response<Boolean> checkName(String name);
 
     Response<Boolean> delete(CityDeleteRequest request);
+
+    Response<List<CityInfo>> findAll();
 }

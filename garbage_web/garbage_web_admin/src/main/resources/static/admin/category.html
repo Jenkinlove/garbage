@@ -34,7 +34,7 @@
                                 data-toggle="modal"
                                 data-target="#editModal"><i class="fa fa-file-o"></i> 新建
                         </button>
-                        <button type="button" class="btn btn-default"
+                        <button @click="deleteCategories()" type="button" class="btn btn-default"
                                 title="删除"><i
                                 class="fa fa-trash-o"></i> 删除
                         </button>
@@ -45,16 +45,17 @@
                     <div class="box-tools pull-right">
                         <div class="has-feedback" style="margin-left: 350px; font-size: 16px">
                             城市：
-                            <select>
+                            <select v-model="searchEntity.cityId">
                                 <option :value="-1">全部</option>
                                 <option :value="city.id"
                                         v-for="city in cityList">
                                     {{city.name}}
                                 </option>
                             </select>
-                            分类名称: <input type="text" class="form-control"
+                            分类名称: <input v-model="searchEntity.name" type="text"
+                                         class="form-control"
                         >
-                            <input class="btn btn-default" type="button"
+                            <input @click="pageHandler(1)" class="btn btn-default" type="button"
                                    value="查询">
                         </div>
                     </div>
@@ -76,121 +77,14 @@
                 </thead>
                 <tbody>
 
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>1</td>
-                    <td>可回收物</td>
-                    <td>杭州</td>
+                <tr v-for="categoryItem in categoryList">
+                    <td><input @click="selected($event, categoryItem.id)" type="checkbox"></td>
+                    <td>{{categoryItem.id}}</td>
+                    <td>{{categoryItem.name}}</td>
+                    <td>{{cityMap[categoryItem.cityId]}}</td>
                     <td class="text-center">
                         <button type="button"
-                                class="btn bg-olive btn-xs" data-toggle="modal"
-                                data-target="#editModal">修改
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>2</td>
-                    <td>有害垃圾</td>
-                    <td>杭州</td>
-                    <td class="text-center">
-                        <button type="button"
-                                class="btn bg-olive btn-xs" data-toggle="modal"
-                                data-target="#editModal">修改
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>3</td>
-                    <td>易腐垃圾</td>
-                    <td>杭州</td>
-                    <td class="text-center">
-                        <button type="button"
-                                class="btn bg-olive btn-xs" data-toggle="modal"
-                                data-target="#editModal">修改
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>4</td>
-                    <td>其他垃圾</td>
-                    <td>杭州</td>
-                    <td class="text-center">
-                        <button type="button"
-                                class="btn bg-olive btn-xs" data-toggle="modal"
-                                data-target="#editModal">修改
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>5</td>
-                    <td>可回收物</td>
-                    <td>上海</td>
-                    <td class="text-center">
-                        <button type="button"
-                                class="btn bg-olive btn-xs" data-toggle="modal"
-                                data-target="#editModal">修改
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>6</td>
-                    <td>有害垃圾</td>
-                    <td>上海</td>
-                    <td class="text-center">
-                        <button type="button"
-                                class="btn bg-olive btn-xs" data-toggle="modal"
-                                data-target="#editModal">修改
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>7</td>
-                    <td>湿垃圾</td>
-                    <td>上海</td>
-                    <td class="text-center">
-                        <button type="button"
-                                class="btn bg-olive btn-xs" data-toggle="modal"
-                                data-target="#editModal">修改
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>8</td>
-                    <td>干垃圾</td>
-                    <td>上海</td>
-                    <td class="text-center">
-                        <button type="button"
-                                class="btn bg-olive btn-xs" data-toggle="modal"
-                                data-target="#editModal">修改
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>9</td>
-                    <td>可回收物</td>
-                    <td>北京</td>
-                    <td class="text-center">
-                        <button type="button"
-                                class="btn bg-olive btn-xs" data-toggle="modal"
-                                data-target="#editModal">修改
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>10</td>
-                    <td>有害垃圾</td>
-                    <td>北京</td>
-                    <td class="text-center">
-                        <button type="button"
+                                @click="findById(categoryItem.id)"
                                 class="btn bg-olive btn-xs" data-toggle="modal"
                                 data-target="#editModal">修改
                         </button>
@@ -208,36 +102,78 @@
     </zpagenav>
 
     <!-- 编辑窗口 -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+    <div class="modal fade" style="margin-top:-100px;" id="editModal" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"
+                    <button @click="close()" type="button" class="close" data-dismiss="modal"
                             aria-hidden="true">×
                     </button>
-                    <h3 id="myModalLabel">垃圾分类添加</h3>
+                    <h3 id="myModalLabel">{{category.id != null ? '垃圾分类编辑' : '垃圾分类添加'}}</h3>
                 </div>
                 <div class="modal-body">
                     <table class="table table-bordered table-striped" width="800px">
                         <tr>
                             <td>垃圾分类名称</td>
-                            <td><input class="form-control" placeholder="垃圾分类名称"></td>
+                            <td><input v-model="category.name" class="form-control"
+                                       placeholder="垃圾分类名称"></td>
+                        </tr>
+                        <tr>
+                            <td>城市</td>
+                            <td>
+                                <select v-model="category.cityId" style="height: 30px;
+                                width:150px">
+                                    <option :value="city.id"
+                                            v-for="city in cityList">
+                                        {{city.name}}
+                                    </option>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td>垃圾分类描述</td>
                             <td>
-                                <area class="form-control">
+                                <textarea v-model="category.description" class="form-control"
+                                          rows="5"
+                                          cols="15"></textarea>
                             </td>
                         </tr>
+                        <tr>
+                            <td>垃圾种类图片</td>
+                            <td>
+                                <input type="file" id="file"/>
+                                <button class="btn btn-primary" type="button"
+                                        @click="uploadImage()"
+                                        style="margin-top: 10px; ">上传
+                                </button>
+                                <button class="btn btn-primary" type="button"
+                                        @click="deleteImage()"
+                                        style="margin-top: 10px; ">删除
+                                </button>
+                                <img :src="imageUrl" style="margin-left: 100px"
+                                     width="120px"
+                                     height="120px"
+                                     alt=""/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>垃圾分分类举例</td>
+                            <td>
+                                <textarea v-model="category.example" class="form-control" rows="5"
+                                          cols="15"></textarea>
+                            </td>
+                        </tr>
+
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-success" data-dismiss="modal"
+                    <button @click="toEditCategory()" class="btn btn-success" data-dismiss="modal"
                             aria-hidden="true">保存
                     </button>
-                    <button class="btn btn-default" data-dismiss="modal"
+                    <button @click="close()" class="btn btn-default" data-dismiss="modal"
                             aria-hidden="true">关闭
                     </button>
                 </div>

@@ -12,6 +12,8 @@ import com.xiong.common.utils.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/city")
 public class CityController {
@@ -23,6 +25,12 @@ public class CityController {
     @GetMapping("/paging")
     public PageResult<CityInfo> paging(CityPagingRequest request) {
         Response<PageResult<CityInfo>> response = cityServer.paging(request);
+        return Assert.take(response);
+    }
+
+    @GetMapping("/all")
+    public List<CityInfo> findAll() {
+        Response<List<CityInfo>> response = cityServer.findAll();
         return Assert.take(response);
     }
 

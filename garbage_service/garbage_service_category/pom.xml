@@ -3,26 +3,21 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>garbage_parent</artifactId>
+        <artifactId>garbage_service</artifactId>
         <groupId>com.xiong</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>garbage_api</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>garbage_api_garb</module>
-        <module>garbage_api_city</module>
-        <module>garbage_api_category</module>
-    </modules>
+    <artifactId>garbage_service_category</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.xiong</groupId>
-            <artifactId>garbage_common</artifactId>
+            <artifactId>garbage_api_category</artifactId>
             <version>${parent.version}</version>
         </dependency>
     </dependencies>
+
 
 </project>

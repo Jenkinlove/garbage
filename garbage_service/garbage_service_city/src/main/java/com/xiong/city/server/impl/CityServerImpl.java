@@ -106,4 +106,16 @@ public class CityServerImpl implements CityServer {
             return Response.fail("city.delete.fail");
         }
     }
+
+    @Override
+    public Response<List<CityInfo>> findAll() {
+        try {
+            List<City> cities = cityMapper.selectAll();
+            List<CityInfo> cityInfos = AssembleDataUtils.list2list(cities, cityApiConverter::get);
+            return Response.ok(cityInfos);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.fail("city.find.fail");
+        }
+    }
 }

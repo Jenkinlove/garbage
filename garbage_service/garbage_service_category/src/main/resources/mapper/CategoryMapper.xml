@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.xiong.category.dao.CategoryMapper">
+
+    <sql id="tb">
+        `category`
+    </sql>
+
+    <sql id="cols_all">
+        `id`, `name`, `description`, `image`, `city_id`, `example`, `created_at`
+    </sql>
+
+    <insert id="create" parameterType="com.xiong.category.model.Category">
+        INSERT INTO
+        <include refid="tb"/>
+        (
+        `name`,
+        <if test="description != null">`description`,</if>
+        <if test="image != null">`image`,</if>
+        `city_id`,
+        <if test="example != null">`example`,</if>
+        `created_at`
+        )
+        VALUES
+        (
+        #{name},
+        <if test="description != null">#{description},</if>
+        <if test="image != null">#{image},</if>
+        #{cityId},
+        <if test="example != null">#{example},</if>
+        #{createdAt}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.xiong.category.model.Category">
+        UPDATE
+        <include refid="tb"/>
+        <set>
+            <if test="name != null">`name` = #{name},</if>
+            <if test="description != null">`description` = #{description},</if>
+            <if test="image != null">`image` = #{image},</if>
+            <if test="cityId != null">`city_id` = #{cityId},</if>
+            <if test="example != null">`example` = #{example}</if>
+        </set>
+        WHERE `id` = #{id}
+    </update>
+
+    <delete id="deleteCategory">
+        DELETE FROM
+        <include refid="tb"/>
+        WHERE `id` IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="paging" resultType="com.xiong.category.model.Category">
+        SELECT
+        <include refid="cols_all"/>
+        FROM
+        <include refid="tb"/>
+        <where>
+            <if test="cityId != null">`city_id` = #{cityId}</if>
+            <if test="name != null">AND `name` like CONCAT('%', #{name}, '%')</if>
+        </where>
+        ORDER BY `created_at` DESC
+    </select>
+
+
+</mapper>
