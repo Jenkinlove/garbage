@@ -30,6 +30,12 @@
 
         <dependency>
             <groupId>com.xiong</groupId>
+            <artifactId>garbage_api_problem</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.xiong</groupId>
             <artifactId>garbage_api_category</artifactId>
             <version>${parent.version}</version>
         </dependency>

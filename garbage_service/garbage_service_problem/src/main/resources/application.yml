@@ -1,0 +1,25 @@
+server:
+  port: 8500
+
+spring:
+  application:
+    name: problem-client
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/garbage?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true
+    username: root
+    password: 123456
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 #nacos服务的地址 不要加http
+  aop:
+    auto: true
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.xiong.problem.model
+  configuration:
+    map-underscore-to-camel-case: true
+

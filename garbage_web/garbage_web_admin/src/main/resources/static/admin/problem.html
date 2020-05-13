@@ -35,6 +35,7 @@
                                 data-target="#editModal"><i class="fa fa-file-o"></i> 新建
                         </button>
                         <button type="button" class="btn btn-default"
+                                @click="deleteProblem()"
                                 title="删除"><i
                                 class="fa fa-trash-o"></i> 删除
                         </button>
@@ -44,9 +45,10 @@
                     </div>
                     <div class="box-tools pull-right">
                         <div class="has-feedback" style="margin-left: 350px; font-size: 16px">
-                            问题名称: <input type="text" class="form-control"
+                            问题名称: <input v-model="searchEntity.name" type="text"
+                                         class="form-control"
                         >
-                            <input class="btn btn-default" type="button"
+                            <input @click="pageHandler(1)" class="btn btn-default" type="button"
                                    value="查询">
                         </div>
                     </div>
@@ -72,50 +74,18 @@
                 </thead>
                 <tbody>
 
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>1</td>
-                    <td>城市生活垃圾从哪里来？</td>
-                    <td>人类活动</td>
-                    <td>垃圾桶</td>
-                    <td>街上</td>
-                    <td>超市</td>
-                    <td>A</td>
+                <tr v-for="problemItem in problemList">
+                    <td><input @click="deleteSelect($event, problemItem.id)" type="checkbox"></td>
+                    <td>{{problemItem.id}}</td>
+                    <td>{{problemItem.name}}</td>
+                    <td>{{problemItem.selectA}}</td>
+                    <td>{{problemItem.selectB}}</td>
+                    <td>{{problemItem.selectC}}</td>
+                    <td>{{problemItem.selectD}}</td>
+                    <td>{{problemItem.rightAnswer}}</td>
                     <td class="text-center">
                         <button type="button"
-                                class="btn bg-olive btn-xs" data-toggle="modal"
-                                data-target="#editModal">修改
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>2</td>
-                    <td>旧衣服属于什么垃圾？</td>
-                    <td>可回收垃圾</td>
-                    <td>有害垃圾</td>
-                    <td>可降解垃圾</td>
-                    <td>其他垃圾</td>
-                    <td>D</td>
-                    <td class="text-center">
-                        <button type="button"
-                                class="btn bg-olive btn-xs" data-toggle="modal"
-                                data-target="#editModal">修改
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>3</td>
-                    <td>蛋糕属于以下哪种垃圾？</td>
-                    <td>可回收垃圾</td>
-                    <td>有害垃圾</td>
-                    <td>可降解垃圾</td>
-                    <td>其他垃圾</td>
-                    <td>D</td>
-                    <td class="text-center">
-                        <button type="button"
+                                @click="findProblem(problemItem.id)"
                                 class="btn bg-olive btn-xs" data-toggle="modal"
                                 data-target="#editModal">修改
                         </button>
@@ -139,25 +109,87 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"
+                    <button @click="close()" type="button" class="close" data-dismiss="modal"
                             aria-hidden="true">×
                     </button>
-                    <h3 id="myModalLabel">城市编辑</h3>
+                    <h3 id="myModalLabel">{{problem.id != null ? '游戏问题编辑' : '游戏问题添加'}}</h3>
                 </div>
                 <div class="modal-body">
                     <table class="table table-bordered table-striped" width="800px">
                         <tr>
-                            <td>城市名称</td>
-                            <td><input class="form-control" placeholder="城市名称"></td>
+                            <td>问题类型</td>
+                            <td>
+                                <select class="form-control"
+                                        v-model="problem.problemType">
+                                    <option value="1" selected="selected">文字类型</option>
+                                    <option value="2">图片类型</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr v-if="problem.problemType == 1">
+                            <td>问题</td>
+                            <td><input class="form-control" v-model="problem.name"
+                                       placeholder="问题"></td>
+                        </tr>
+                        <tr v-if="problem.problemType == 2">
+                            <td>问题</td>
+                            <td>
+                                <input type="file" id="file"/>
+                                <button class="btn btn-primary" type="button"
+                                        @click="uploadImage()"
+                                        style="margin-top: 10px; ">上传
+                                </button>
+                                <button class="btn btn-primary" type="button"
+                                        @click="deleteImage()"
+                                        style="margin-top: 10px; ">删除
+                                </button>
+                                <img :src="problemImageUrl" style="margin-left: 100px"
+                                     width="120px"
+                                     height="120px"
+                                     alt=""/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>选项A</td>
+                            <td><input class="form-control" v-model="problem.selectA"
+                                       placeholder="选项A"></td>
+                        </tr>
+                        <tr>
+                            <td>选项B</td>
+                            <td><input class="form-control" v-model="problem.selectB"
+                                       placeholder="选项B"></td>
+                        </tr>
+                        <tr>
+                            <td>选项C</td>
+                            <td><input class="form-control" v-model="problem.selectC"
+                                       placeholder="选项C"></td>
+                        </tr>
+                        <tr>
+                            <td>选项D</td>
+                            <td><input class="form-control" v-model="problem.selectD"
+                                       placeholder="选项D"></td>
+                        </tr>
+                        <tr>
+                            <td>正确答案</td>
+                            <td>
+                                <select class="form-control"
+                                        v-model="problem.rightAnswer">
+                                    <option value="-1">请选择正确答案</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                </select>
+                            </td>
                         </tr>
 
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-success" data-dismiss="modal"
+                    <button @click="toEditProblem()" class="btn btn-success" data-dismiss="modal"
                             aria-hidden="true">保存
                     </button>
-                    <button class="btn btn-default" data-dismiss="modal"
+                    <button @click="close()" class="btn btn-default" data-dismiss="modal"
                             aria-hidden="true">关闭
                     </button>
                 </div>
@@ -172,5 +204,5 @@
 <script type="text/javascript" src="../plugins/vue/axios-0.18.0.js"></script>
 <script type="text/javascript" src="../plugins/vue/qs.js"></script>
 <script type="text/javascript" src="../plugins/pageination/zpageNav.js"></script>
-<script src="../js/city.js"></script>
+<script src="../js/problem.js"></script>
 </html>
