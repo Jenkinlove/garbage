@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <!-- 页面meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>文章管理</title>
-    <!-- Tell the browser to be responsive to screen width -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
           name="viewport">
     <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
@@ -16,9 +14,9 @@
     <link rel="stylesheet" href="../plugins/pageination/zpageNav.css">
     <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../plugins/wang/wangEditor.css">
 
 </head>
-
 <body class="hold-transition skin-red sidebar-mini">
 
 <div id="app">
@@ -33,32 +31,35 @@
                 <div class="form-group form-inline">
                     <div class="btn-group">
                         <button type="button" class="btn btn-default"
+                                title="新建"
+                                data-toggle="modal"
+                                data-target="#editModal"><i class="fa fa-file-o"></i> 新建
+                        </button>
+                        <button @click="deleteArticle()" type="button" class="btn btn-default"
                                 title="删除"><i
-                                class="fa fa-trash-o"></i> 新增
+                                class="fa fa-trash-o"></i> 删除
                         </button>
-                        <button type="button" class="btn btn-default"
-                                title="审核通过"><i
-                                class="fa fa-check"></i> 删除
+                        <button type="button" class="btn btn-default" title="刷新"
+                                onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新
                         </button>
-                        <button onclick="window.location.reload();" type="button"
-                                class="btn btn-default" title="刷新">
-                            <i class="fa fa-refresh"></i> 刷新
-                        </button>
+                    </div>
+                    <div class="box-tools pull-right">
+                        <div class="has-feedback" style="margin-left: 350px; font-size: 16px">
+                            文章类型：
+                            <select v-model="searchEntity.articleType">
+                                <option value="-1">全部</option>
+                                <option value="1">政策</option>
+                                <option value="2">新闻资讯</option>
+                            </select>
+                            文章名称: <input v-model="searchEntity.name" type="text"
+                                         class="form-control">
+                            <input @click="pageHandler(1)" class="btn btn-default" type="button"
+                                   value="查询">
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="box-tools pull-right">
-                <div class="has-feedback">
-                    文章类型：
-                    <select>
-                        <option value="-1">全部</option>
-                        <option value="1">新闻资讯</option>
-                        <option value="2">政策</option>
-                    </select>
-                    文章名称：<input>
-                    <button class="btn btn-default">查询</button>
-                </div>
-            </div>
+
             <!--数据列表-->
             <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
                 <thead>
@@ -73,82 +74,91 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>1</td>
-                    <td>我国不同城市之间对于不同垃圾分类方法的比较</td>
-                    <td>新闻资讯</td>
+
+                <tr v-for="articleItem in articleList">
+                    <td><input @click="deleteSelect($event, articleItem.id)" type="checkbox"></td>
+                    <td>{{articleItem.id}}</td>
+                    <td>{{articleItem.name}}</td>
+                    <td>{{articleTypes[articleItem.articleType]}}</td>
                     </td>
                     <td class="text-center">
                         <button type="button"
-                                class="btn bg-olive btn-xs">详情
+                                @click="findOne(articleItem.id)"
+                                class="btn bg-olive btn-xs"
+                                data-toggle="modal"
+                                data-target="#editModal">详情
                         </button>
                     </td>
                 </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>2</td>
-                    <td>垃圾分类的智慧与耐心</td>
-                    <td>新闻资讯</td>
-                    </td>
-                    <td class="text-center">
-                        <button type="button"
-                                class="btn bg-olive btn-xs">详情
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>3</td>
-                    <td>“这是什么垃圾？” 进博会上的垃圾分类大考</td>
-                    <td>新闻资讯</td>
-                    </td>
-                    <td class="text-center">
-                        <button type="button"
-                                class="btn bg-olive btn-xs">详情
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>4</td>
-                    <td>住房和城乡建设部等部门关于在全国地级及以上城市全面开展生活垃圾分类工作的通知</td>
-                    <td>政策</td>
-                    </td>
-                    <td class="text-center">
-                        <button type="button"
-                                class="btn bg-olive btn-xs">详情
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>5</td>
-                    <td>青岛市生活垃圾分类管理办法</td>
-                    <td>政策</td>
-                    </td>
-                    <td class="text-center">
-                        <button type="button"
-                                class="btn bg-olive btn-xs">详情
-                        </button>
-                    </td>
-                </tr>
+
                 </tbody>
             </table>
+
         </div>
-        <!--分页-->
-        <zpagenav v-bind:page="page" v-bind:page-size="pageSize" v-bind:total="total"
-                  v-bind:max-page="maxPage" v-on:pagehandler="pageHandler">
-        </zpagenav>
     </div>
+    <!--分页-->
+    <zpagenav name="pagenav" v-bind:page="page" v-bind:page-size="pageSize" v-bind:total="total"
+              v-bind:max-page="maxPage" v-on:pagehandler="pageHandler">
+    </zpagenav>
+
+    <!-- 编辑窗口 -->
+    <div class="modal fade" id="editModal" tabindex="-1"
+         role="dialog"
+         aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin:-100px 0  0 -230px; width: 1000px">
+                <div class="modal-header">
+                    <button @click="close()" type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">×
+                    </button>
+                    <h3 id="myModalLabel">{{article.id != null ? '文章编辑' : '文章添加'}}</h3>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered table-striped" width="800px">
+                        <tr>
+                            <td>文章名称</td>
+                            <td><input v-model="article.name" class="form-control"
+                                       placeholder="文章名称"></td>
+                        </tr>
+                        <tr>
+                            <td>文章类型</td>
+                            <td>
+                                <select class="form-control"
+                                        v-model="article.articleType">
+                                    <option value="1">政策</option>
+                                    <option value="2">新闻资讯</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>文章内容</td>
+                            <td>
+                                <div id="editor"></div>
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button @click="toEditArticle()" class="btn btn-success" data-dismiss="modal"
+                            aria-hidden="true">保存
+                    </button>
+                    <button @click="close()" class="btn btn-default" data-dismiss="modal"
+                            aria-hidden="true">关闭
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
-
 </body>
-
 <script type="text/javascript" src="../plugins/vue/vuejs-2.5.16.js"></script>
 <script type="text/javascript" src="../plugins/vue/axios-0.18.0.js"></script>
 <script type="text/javascript" src="../plugins/vue/qs.js"></script>
-<script src="../plugins/pageination/zpageNav.js"></script>
-<script src="../js/goods.js"></script>
-
+<script type="text/javascript" src="../plugins/pageination/zpageNav.js"></script>
+<script type="text/javascript" src="../plugins/wang/wangEditor.js"></script>
+<script src="../js/article.js"></script>
 </html>

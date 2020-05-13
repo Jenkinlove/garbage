@@ -37,7 +37,7 @@ public class ProblemServerImpl implements ProblemServer {
             return Response.ok(PageResult.paging(page.getTotal(), problemInfos));
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.fail("garbage.paging.fail");
+            return Response.fail("problem.paging.fail");
         }
     }
 
@@ -48,7 +48,7 @@ public class ProblemServerImpl implements ProblemServer {
             return Response.ok(problemApiConverter.get(problem));
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.fail("garbage.find.fail");
+            return Response.fail("problem.find.fail");
         }
     }
 
@@ -62,7 +62,7 @@ public class ProblemServerImpl implements ProblemServer {
             return Response.ok(problem.getId());
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.fail("garbage.create.fail");
+            return Response.fail("problem.create.fail");
         }
     }
 
@@ -75,7 +75,7 @@ public class ProblemServerImpl implements ProblemServer {
             return Response.ok(updateCount == 1);
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.fail("garbage.update.fail");
+            return Response.fail("problem.update.fail");
         }
     }
 
@@ -87,7 +87,7 @@ public class ProblemServerImpl implements ProblemServer {
             return Response.ok(deleteCount != 0);
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.fail("garbage.delete.fail");
+            return Response.fail("problem.delete.fail");
         }
     }
 }

@@ -36,6 +36,12 @@
 
         <dependency>
             <groupId>com.xiong</groupId>
+            <artifactId>garbage_api_article</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.xiong</groupId>
             <artifactId>garbage_api_category</artifactId>
             <version>${parent.version}</version>
         </dependency>

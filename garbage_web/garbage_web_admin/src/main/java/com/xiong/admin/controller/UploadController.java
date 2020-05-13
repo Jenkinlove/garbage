@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +39,7 @@ public class UploadController {
         }
     }
 
-    @RequestMapping("/uploadImage")
+    @RequestMapping("/uploadEditor")
     public Map uploadImage(MultipartFile upfile) throws Exception {
         try {
             //上传至阿里云oss中
@@ -46,10 +47,8 @@ public class UploadController {
                     aliOssProperty.getEndpoint(), aliOssProperty.getAccessKeyId(),
                     aliOssProperty.getAccessKeySecret());
             Map<String, Object> result = new HashMap<>();
-            result.put("state", "SUCCESS");
-            result.put("url", url);
-            result.put("title", upfile.getOriginalFilename());
-            result.put("original", upfile.getOriginalFilename());
+            result.put("errno", 0);
+            result.put("data", Collections.singleton(url));
             return result;
         } catch (Exception e) {
             e.printStackTrace();
