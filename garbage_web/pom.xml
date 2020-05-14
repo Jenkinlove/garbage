@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>garbage_web_admin</module>
+        <module>garbage_web_portal</module>
     </modules>
 
     <dependencies>

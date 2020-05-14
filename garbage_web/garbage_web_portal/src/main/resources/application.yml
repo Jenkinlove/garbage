@@ -1,0 +1,11 @@
+server:
+  port: 7100
+
+spring:
+  application:
+    name: portal
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 #nacos服务的地址 不要加http

@@ -1,0 +1,91 @@
+body {
+    line-height: 1.5em;
+    color: #000;
+    background-color: #f7f8f9;
+}
+
+a {
+    font-size: 12px;
+    line-height: 1.5em;
+    text-decoration: none;
+}
+
+/*头部导航条*/
+.navbar {
+    height: 100px;
+    padding: 0 40px;
+
+}
+
+.navbar > span {
+    font-size: 35px;
+    color: #ffffff;
+    display: none;
+}
+
+.navbar-brand {
+    font-size: 29px;
+    color: #9fcdff !important;
+}
+
+.nav-link {
+    font-size: 20px;
+    margin-left: 30px;
+    color: #fff3cd !important;
+}
+
+.location {
+    position: absolute;
+    right: 130px;
+}
+
+/*内容部分*/
+.content {
+    margin: 100px 100px;
+    position: relative;
+}
+
+.contentList {
+    position: fixed;
+    top: 150px;
+    left: 10%;
+}
+
+.contentIn {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 55%;
+}
+
+.conArticle {
+    font-size: 1.5em;
+    line-height: 40px;
+    color: #343a40;
+}
+
+.blueColor {
+    background-color: #c7e1f3;
+}
+
+@media screen and (max-width: 960px) {
+    .contentList {
+        left: 0;
+        z-index: 999;
+    }
+
+    .content {
+        margin: 0;
+    }
+
+    .contentIn {
+        top: 40px;
+        left: 25%;
+        transform: translateX(0);
+        width: 70%;
+
+    }
+}
+
+

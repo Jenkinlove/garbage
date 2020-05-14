@@ -1,0 +1,72 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "2831972",
+      "name": "新闻",
+      "font_class": "xinwen",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "4925543",
+      "name": "游戏",
+      "font_class": "youxi",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "5003801",
+      "name": "问题",
+      "font_class": "wenti",
+      "unicode": "e647",
+      "unicode_decimal": 58951
+    },
+    {
+      "icon_id": "6762078",
+      "name": "定位",
+      "font_class": "dingwei",
+      "unicode": "e6ad",
+      "unicode_decimal": 59053
+    },
+    {
+      "icon_id": "11346891",
+      "name": "政策",
+      "font_class": "zhengce",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "11755927",
+      "name": "对",
+      "font_class": "V",
+      "unicode": "e701",
+      "unicode_decimal": 59137
+    },
+    {
+      "icon_id": "11755944",
+      "name": "错",
+      "font_class": "V1",
+      "unicode": "e702",
+      "unicode_decimal": 59138
+    },
+    {
+      "icon_id": "14111033",
+      "name": "垃圾分类.SVG",
+      "font_class": "lajifenleiSVG",
+      "unicode": "e638",
+      "unicode_decimal": 58936
+    },
+    {
+      "icon_id": "14421461",
+      "name": "关闭",
+      "font_class": "guanbi_huaban1",
+      "unicode": "e66a",
+      "unicode_decimal": 58986
+    }
+  ]
+}

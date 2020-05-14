@@ -1,0 +1,87 @@
+* {
+    margin: 0;
+    padding: 0;
+
+}
+
+body {
+    line-height: 1.5em;
+    color: #000;
+    background-image: url(../images/gamelastbg.png);
+    background-size: cover;
+    /*background-color: #f7f8f9;*/
+    font-size: 20px;
+}
+
+/*游戏进入界面*/
+.gameEnter {
+    width: 30%;
+    height: 300px;
+    /*border: 1px solid #494f54;*/
+    border-radius: 50%;
+    position: relative;
+    margin: 250px auto;
+    background-image: url(./../images/gameEnter.jpg);
+    background-size: 90%;
+    z-index: 80;
+}
+
+.gameEnter > .enter {
+    display: inline-block;
+    width: 55%;
+    height: 40%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-58%, -43%);
+}
+
+/*计时器*/
+/*.interval{*/
+/*position: absolute;*/
+/*right:10px;*/
+/*top:20px;*/
+/*width: 10%;*/
+/*height: 5%;*/
+/*border-radius: 50%;*/
+/*}*/
+
+/*选择题界面*/
+.choice {
+    position: relative;
+    margin-top: 200px;
+    /*background: #76aaba;*/
+    opacity: 0.7;
+    width: 45%;
+    display: none;
+}
+
+@media only screen and (max-width: 700px) {
+    .choice {
+        width: 70%;
+    }
+
+    .choiceQuestion {
+        width: 50%;
+        line-height: 20%;
+        font-size: 15px;
+        margin: 40px auto;
+    }
+}
+
+.choiceAnswer {
+    margin-top: 30px;
+    width: 40%;
+    font-style: oblique;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.choiceQuestion {
+    width: 50%;
+    line-height: 20%;
+    font-size: 25px;
+    margin: 70px auto;
+}

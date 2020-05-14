@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <!--保证在移动端能正常显示-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="font/iconfont.css">
+    <link rel="stylesheet" href="css/game.css">
+    <title>Hello, world!</title>
+
+
+</head>
+<body>
+<!--是否进入游戏界面-->
+<div class="gameEnter">
+    <span class="enter"></span>
+</div>
+<!--游戏界面-->
+<div class="container choice card">
+    <!--计时器-->
+    <div class="interval">
+        8s
+    </div>
+    <!--问题-->
+    <div class="row choiceQuestion ">
+        <span class="iconfont icon-wenti"></span> 苹果是什么垃圾？
+    </div>
+    <!--选项A-->
+    <div class="row choiceAnswer alert alert-success" role="alert">
+        干垃圾 <span class="iconfont"></span>
+
+    </div>
+    <!--选项B-->
+    <div class="row choiceAnswer alert alert-success" role="alert">
+        湿垃圾 <span class="iconfont"></span>
+
+    </div>
+    <!--选项C-->
+    <div class="row choiceAnswer alert alert-success" role="alert">
+        可回收垃圾 <span class="iconfont"></span>
+    </div>
+    <!--选项D-->
+    <div class="row choiceAnswer alert alert-success" role="alert">
+        有害垃圾 <span class="iconfont"></span>
+    </div>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<!--所有插件都依赖于jquery，所以放在最前面-->
+<script src="js/jquery-3.4.1.js"></script>
+<!--提示弹窗大多通过popper.min.js实现-->
+<script src="js/popper.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
