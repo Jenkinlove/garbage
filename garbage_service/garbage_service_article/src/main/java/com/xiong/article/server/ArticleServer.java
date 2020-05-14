@@ -8,6 +8,8 @@ import com.xiong.article.api.response.ArticleInfo;
 import com.xiong.common.utils.PageResult;
 import com.xiong.common.utils.Response;
 
+import java.util.List;
+
 public interface ArticleServer {
     Response<PageResult<ArticleInfo>> paging(ArticlePagingRequest request);
 
@@ -18,4 +20,6 @@ public interface ArticleServer {
     Response<Boolean> update(ArticleUpdateRequest request);
 
     Response<Boolean> delete(ArticleDeleteRequest request);
+
+    Response<List<ArticleInfo>> findByType(Integer articleType);
 }

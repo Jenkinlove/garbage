@@ -28,7 +28,7 @@ public class ArticleController {
             return Response.ok(paging);
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.fail("problem.paging.fail");
+            return Response.fail("article.paging.fail");
         }
     }
 
@@ -39,7 +39,7 @@ public class ArticleController {
             return Response.ok(articleInfo);
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.fail("problem.find.fail");
+            return Response.fail("article.find.fail");
         }
     }
 
@@ -50,7 +50,7 @@ public class ArticleController {
             return Response.ok(problemId);
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.fail("problem.create.fail");
+            return Response.fail("article.create.fail");
         }
     }
 
@@ -61,7 +61,7 @@ public class ArticleController {
             return Response.ok(isOk);
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.fail("problem.update.fail");
+            return Response.fail("article.update.fail");
         }
     }
 
@@ -72,7 +72,7 @@ public class ArticleController {
             return Response.ok(isOk);
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.fail("problem.delete.fail");
+            return Response.fail("article.delete.fail");
         }
     }
 

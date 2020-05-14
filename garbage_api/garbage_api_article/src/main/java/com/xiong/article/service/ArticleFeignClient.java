@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @FeignClient(name = "article-client")
 @RequestMapping("/api/article")
 public interface ArticleFeignClient {
@@ -30,4 +32,7 @@ public interface ArticleFeignClient {
 
     @PostMapping("/delete")
     public Boolean delete(@SpringQueryMap ArticleDeleteRequest request);
+
+    @GetMapping("/get")
+    public List<ArticleInfo> findByType(@RequestParam("articleType") Integer articleType);
 }

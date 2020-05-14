@@ -14,174 +14,103 @@
 
 </head>
 <body>
-<!--头部导航条-->
-<nav class="navbar navbar-expand-lg navbar-light bg-dark p-lg-40">
-    <a class="navbar-brand" href="#"><span
-            class="iconfont icon-lajifenleiSVG"></span>垃圾分类指南</a><span class="d-lg-inline">|</span>
-    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item ">
-                <a class="nav-link" href="#">政策 <span class="iconfont icon-zhengce"></span><span
-                        class="sr-only">
+<div id="app">
+    <!--头部导航条-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark p-lg-40">
+        <a class="navbar-brand" href="/index.html"><span
+                class="iconfont icon-lajifenleiSVG"></span>垃圾分类指南</a><span
+            class="d-lg-inline">|</span>
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item ">
+                    <a class="nav-link" href="/news.html?type=1">政策 <span
+                            class="iconfont icon-zhengce"></span><span
+                            class="sr-only">
                     (current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">资讯 <span class="iconfont icon-xinwen"></span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">游戏 <span class="iconfont icon-youxi"></span></a>
-            </li>
-        </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/news.html?type=2">资讯
+                        <span class="iconfont icon-xinwen"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/game.html">游戏
+                        <span class="iconfont icon-youxi"></span></a>
+                </li>
+            </ul>
+        </div>
 
         <!--定位框-->
-        <div class="dropdown location">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                    data-toggle="dropdown">
-                <span class="iconfont icon-dingwei"></span>上海
+        <h3 class="iconfont icon-dingwei"></h3>
+        <select v-model="selectedEntity.cityId"
+                @change="getCategoryByCity(selectedEntity.cityId)"
+                id="location">
+            <option :value="city.id" v-for="city in cityList">{{city.name}}</option>
+        </select>
+    </nav>
+
+    <!--搜索框-->
+    <div class="search">
+        <nav class="navbar navbar-light bg-light search-nav">
+            <input v-model="selectedEntity.name" class="form-control mr-sm-2 search-inp"
+                   placeholder="请输入垃圾名称">
+            <button @click="searchGarbage()"
+                    class="btn btn-outline-success my-2 my-sm-0 searchBtn">搜索
             </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">北京</a>
-                <a class="dropdown-item" href="#">上海</a>
-                <a class="dropdown-item" href="#">杭州</a>
-                <a class="dropdown-item" href="#">深圳</a>
+        </nav>
+    </div>
+    <!--分类查询结果蒙版-->
+    <div class="mask"></div>
+    <div class="card toDisplay">
+        <!--搜索关键字的结果-->
+        <p class="maskTitle"><span style="color: #ffffff;">{{garbage.name}} </span>
+            <span v-if="garbage.id!=null">———{{categoryMap[garbage.categoryId]}}</span>
+            <span id="maskDelete" @click="close()" class="iconfont icon-guanbi_huaban1"></span>
+        </p>
+        <h4 v-if="garbage.id != null && garbageList.length != 0" style="color: #ffffff;">相关垃圾：</h4>
+        <h4 v-if="garbage.id == null && garbageList.length != 0" style="color: #ffffff;">您要找的是：</h4>
+        <h4 v-if="garbage.id == null && garbageList.length == 0"
+            style="color: #ffffff;">很遗憾，未能帮您找到相关垃圾信息
+        </h4>
+        <ul class="card-body">
+            <li class="card-text" v-for="garbageItem in garbageList">
+                {{garbageItem.name}} 是 {{categoryMap[garbageItem.categoryId]}}
+            </li>
+        </ul>
+        <!--<img src="images/apple.jpg" class="card-img-top" alt="...">-->
+        <!--<div class="card-body">-->
+        <!--<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
+        <!--</div>-->
+    </div>
+
+    <!--分类卡片展示-->
+    <div class="content  d-lg-flex justify-content-between">
+        <!--干垃圾-->
+        <div class="card" v-for="categoryItem in categoryList" style="width: 18rem;">
+            <img :src="categoryItem.image" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{categoryItem.name}}是指：
+                </h5>
+                <p class="card-text">{{categoryItem.description}}</p>
+                <button @click="getDetailCategory(categoryItem.id)" class="btn btn-primary cardBtn">
+                    了解详情
+                </button>
             </div>
         </div>
     </div>
-</nav>
 
-<!--搜索框-->
-<div class="search">
-    <nav class="navbar navbar-light bg-light search-nav">
-        <input class="form-control mr-sm-2 search-inp" placeholder="请输入垃圾名称">
-        <button class="btn btn-outline-success my-2 my-sm-0 searchBtn">搜索</button>
-    </nav>
+    <!--了解详情-->
+    <!--干residual-->
+
+    <div class="jumbotron jumbotron-fluid cardShow container" v-if="category != null">
+        <h1 class="display-6">{{category.name}}</h1>
+        <p class="lead">{{category.example}}</p>
+    </div>
+
+
 </div>
-<!--分类查询结果蒙版-->
-<div class="mask"></div>
-<div class="card toDisplay">
-    <!--搜索关键字的结果-->
-    <p class="maskTitle"><span style="color: #ffffff;">纸巾 </span><span>——— 干垃圾</span><span
-            id="maskDelete" class="iconfont icon-guanbi_huaban1"></span></p>
-    <ul class="card-body">
-        <li class="card-text">厨房纸巾 是 干垃圾</li>
-        <li class="card-text"> 湿纸巾 是 干垃圾</li>
-        <li class="card-text"> 卸妆纸巾 是 干垃圾</li>
-        <li class="card-text">包裹着狗屎的纸巾 是 干垃圾</li>
-    </ul>
-    <!--<img src="images/apple.jpg" class="card-img-top" alt="...">-->
-    <!--<div class="card-body">-->
-    <!--<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-    <!--</div>-->
-</div>
-
-<!--分类卡片展示-->
-<div class="content  d-lg-flex justify-content-between">
-    <!--干垃圾-->
-    <div class="card" style="width: 18rem;">
-        <img src="images/ganlaji.png" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title">干垃圾是指：
-            </h5>
-            <p class="card-text">除有害垃圾、可回收 物、湿垃圾以外的其他 生活废弃物</p>
-            <a href="#" class="btn btn-primary cardBtn">了解详情</a>
-        </div>
-    </div>
-    <!--可回收垃圾-->
-    <div class="card" style="width: 18rem;">
-        <img src="images/kehuishoulaji.png" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title">可回收物是指：</h5>
-            <p class="card-text"> 适宜回收利用和资源化 利用的，如：玻、金、 塑、纸、衣.</p>
-            <a href="#" class="btn btn-primary cardBtn">了解详情</a>
-        </div>
-    </div>
-
-    <!--湿垃圾-->
-    <div class="card" style="width: 18rem;">
-        <img src="images/shilaji.png" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title">湿垃圾是指： </h5>
-            <p class="card-text">日常生活垃圾产生的容 易腐烂的生物质废弃物
-                品等 </p>
-            <a href="#" class="btn btn-primary cardBtn">了解详情</a>
-        </div>
-    </div>
-    <!--有害垃圾-->
-    <div class="card" style="width: 18rem;">
-        <img src="images/youhailaji.png" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title">有害垃圾是指： </h5>
-            <p class="card-text"> 对人体健康或者自然环 境造成直接或潜在危害 的废弃物</p>
-            <a href="#" class="btn btn-primary cardBtn">了解详情</a>
-        </div>
-    </div>
-</div>
-
-<!--了解详情-->
-<!--干residual-->
-<ul>
-    <li class="jumbotron jumbotron-fluid cardHide bg-warning">
-        <div class="container">
-            <h1 class="display-6">干垃圾</h1>
-            <p class="lead">餐盒、餐巾纸、湿纸巾、卫生间用纸、
-                塑料袋、 食品包装袋、污染严重的
-                纸、烟蒂、纸尿裤、 一次性杯子、大骨头、贝壳、花盆、陶瓷等
-                干垃圾投放要求<br/>
-                * 尽量沥干水分
-                * 难以辨识类别的生活垃圾投入干垃
-                圾容器内</p>
-
-        </div>
-    </li>
-    <!--可回收recyclable-->
-    <li class="jumbotron jumbotron-fluid cardHide bg-info">
-        <div class="container">
-            <h1 class="display-6">可回收垃圾</h1>
-            <p class="lead">酱油瓶、玻璃杯、平板玻璃、易拉罐、
-                饮料瓶、洗发水瓶、塑料玩具、书
-                本、报纸、广告单、纸板箱、衣服、
-                床上用品等<br/>
-                可回收物投放要求
-                * 轻投轻放
-                * 清洁干燥，避免污染
-                * 废纸尽量平整
-                * 立体包装物请清空内容物，清洁后
-                压扁投放
-                * 有尖锐边角的，应包裹后投放</p>
-        </div>
-    </li>
-    <!--湿垃圾household-->
-    <li class="jumbotron jumbotron-fluid cardHide bg-secondary">
-        <div class="container">
-            <h1 class="display-6">湿垃圾</h1>
-            <p class="lead">剩菜剩饭、瓜皮果核、花卉绿植、过期
-                食品等
-                湿垃圾投放要求<br/>
-                * 纯流质的食物垃圾，如牛奶等，应
-                直接倒进下水口
-                * 有包装物的湿垃圾应将包装物去除
-                * 后分类投放，包装物请投放到对应
-                * 的可回收物或干垃圾容器</p>
-        </div>
-    </li>
-    <!--有害垃圾hazardous-->
-
-    <li class="jumbotron jumbotron-fluid cardHide bg-danger">
-        <div class="container">
-            <h1 class="display-6">有害垃圾</h1>
-            <p class="lead">废电池、油漆桶、荧光灯管、废药品及
-                其包装物等
-                有害垃圾投放要求<br/>
-                * 投放时请注意轻放
-                * 易破损的请连带包装或包裹后轻放
-                * 如易挥发，请密封后投放
-            </p>
-        </div>
-    </li>
-</ul>
 
 
 <!-- Optional JavaScript -->
@@ -191,6 +120,8 @@
 <!--提示弹窗大多通过popper.min.js实现-->
 <script src="js/popper.js"></script>
 <script src="js/bootstrap.js"></script>
+<script type="text/javascript" src="plugins/vue/vuejs-2.5.16.js"></script>
+<script type="text/javascript" src="plugins/vue/axios-0.18.0.js"></script>
 <script src="js/index.js"></script>
 
 </body>

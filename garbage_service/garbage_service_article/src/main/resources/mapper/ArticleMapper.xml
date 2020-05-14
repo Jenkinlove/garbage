@@ -46,5 +46,14 @@
         ORDER BY `created_at` DESC
     </select>
 
+    <select id="findByType" resultType="com.xiong.article.model.Article">
+        SELECT
+        <include refid="cols_all"/>
+        FROM
+        <include refid="tb"/>
+        WHERE `article_type` = #{articleType}
+        ORDER BY `created_at` DESC
+    </select>
+
 
 </mapper>

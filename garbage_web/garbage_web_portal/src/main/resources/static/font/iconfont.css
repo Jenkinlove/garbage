@@ -61,3 +61,9 @@
     font-size: 40px;
 }
 
+.icon-dingwei {
+    display: inline-block;
+    margin: 10px 195px;
+    color: #fff3cd;
+    z-index: 99;
+}

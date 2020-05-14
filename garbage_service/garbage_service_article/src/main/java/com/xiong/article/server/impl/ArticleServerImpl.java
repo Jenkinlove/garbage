@@ -56,6 +56,18 @@ public class ArticleServerImpl implements ArticleServer {
     }
 
     @Override
+    public Response<List<ArticleInfo>> findByType(Integer articleType) {
+        try {
+            List<Article> articles = articleMapper.findByType(articleType);
+            List<ArticleInfo> articleInfos = AssembleDataUtils.list2list(articles, articleApiConverter::get);
+            return Response.ok(articleInfos);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.fail("article.find.fail");
+        }
+    }
+
+    @Override
     public Response<Long> create(ArticleCreateRequest request) {
         try {
             Article article = articleApiConverter.get(request);

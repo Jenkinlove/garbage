@@ -2,11 +2,10 @@ package com.xiong.garbage.server;
 
 import com.xiong.common.utils.PageResult;
 import com.xiong.common.utils.Response;
-import com.xiong.garbage.api.request.GarbageCreateRequest;
-import com.xiong.garbage.api.request.GarbageDeleteRequest;
-import com.xiong.garbage.api.request.GarbagePagingRequest;
-import com.xiong.garbage.api.request.GarbageUpdateRequest;
+import com.xiong.garbage.api.request.*;
 import com.xiong.garbage.api.response.GarbageInfo;
+
+import java.util.List;
 
 public interface GarbageServer {
     /**
@@ -21,4 +20,6 @@ public interface GarbageServer {
     Response<Boolean> delete(GarbageDeleteRequest request);
 
     Response<GarbageInfo> findById(Long id);
+
+    Response<List<GarbageInfo>> findByName(GarbageFindByNameRequest request);
 }

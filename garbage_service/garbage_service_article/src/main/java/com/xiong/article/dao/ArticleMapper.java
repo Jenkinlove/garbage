@@ -17,4 +17,6 @@ public interface ArticleMapper extends Mapper<Article> {
     int update(Article article);
 
     int deleteArticle(@Param("ids") Set<Long> ids);
+
+    List<Article> findByType(@Param("articleType") Integer articleType);
 }

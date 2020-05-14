@@ -12,6 +12,8 @@ import com.xiong.common.utils.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/article")
 public class ArticleController {
@@ -28,6 +30,12 @@ public class ArticleController {
     @GetMapping("/single")
     public ArticleInfo findById(@RequestParam("id") Long id) {
         Response<ArticleInfo> response = articleServer.findById(id);
+        return Assert.take(response);
+    }
+
+    @GetMapping("/get")
+    public List<ArticleInfo> findByType(@RequestParam("articleType") Integer articleType) {
+        Response<List<ArticleInfo>> response = articleServer.findByType(articleType);
         return Assert.take(response);
     }
 

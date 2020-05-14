@@ -5,10 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.xiong.common.utils.AssembleDataUtils;
 import com.xiong.common.utils.PageResult;
 import com.xiong.common.utils.Response;
-import com.xiong.garbage.api.request.GarbageCreateRequest;
-import com.xiong.garbage.api.request.GarbageDeleteRequest;
-import com.xiong.garbage.api.request.GarbagePagingRequest;
-import com.xiong.garbage.api.request.GarbageUpdateRequest;
+import com.xiong.garbage.api.request.*;
 import com.xiong.garbage.api.response.GarbageInfo;
 import com.xiong.garbage.dao.GarbageMapper;
 import com.xiong.garbage.model.Garbage;
@@ -98,4 +95,22 @@ public class GarbageServerImpl implements GarbageServer {
             return Response.fail("garbage.find.fail");
         }
     }
+
+    @Override
+    public Response<List<GarbageInfo>> findByName(GarbageFindByNameRequest request) {
+        try {
+            if (!StringUtils.isEmpty(request.getName())) {
+                request.setName(request.getName().trim());
+            }
+            List<Garbage> garbageList = garbageMapper.findByName(request.getName(),
+                    request.getCityId());
+            List<GarbageInfo> garbageInfos = AssembleDataUtils.list2list(garbageList,
+                    garbageApiConverter::get);
+            return Response.ok(garbageInfos);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.fail("garbage.find.fail");
+        }
+    }
+
 }

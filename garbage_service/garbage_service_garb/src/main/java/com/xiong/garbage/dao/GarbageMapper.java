@@ -17,4 +17,6 @@ public interface GarbageMapper extends Mapper<Garbage> {
     int update(Garbage garbage);
 
     int deleteGarbages(@Param("ids") Set<Long> ids);
+
+    List<Garbage> findByName(@Param("name") String name, @Param("cityId") Integer cityId);
 }

@@ -47,10 +47,13 @@ ul > li {
     margin-left: 30px;
     color: #fff3cd !important;
 }
+/*下拉菜单*/
 
-.location {
+#location {
     position: absolute;
-    right: 130px;
+    right: 150px;
+    border-radius: 5px;
+    width: 80px;
 }
 
 /*搜索框*/
@@ -154,14 +157,11 @@ ul > li {
 }
 
 /*底部卡片的显示和隐藏*/
-.cardHide {
-    display: none;
-}
 
 .cardShow {
-    display: inline-block !important;
+    display: none;
     position: relative;
     left: 50%;
-    transform: translateX(-53%);
+    transform: translateX(-82%);
 }
 
