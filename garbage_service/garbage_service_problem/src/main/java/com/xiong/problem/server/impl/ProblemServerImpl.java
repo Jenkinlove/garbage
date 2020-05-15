@@ -5,10 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.xiong.common.utils.AssembleDataUtils;
 import com.xiong.common.utils.PageResult;
 import com.xiong.common.utils.Response;
-import com.xiong.problem.api.request.ProblemCreateRequest;
-import com.xiong.problem.api.request.ProblemDeleteRequest;
-import com.xiong.problem.api.request.ProblemPagingRequest;
-import com.xiong.problem.api.request.ProblemUpdateRequest;
+import com.xiong.problem.api.request.*;
 import com.xiong.problem.api.response.ProblemInfo;
 import com.xiong.problem.dao.ProblemMapper;
 import com.xiong.problem.model.Problem;
@@ -88,6 +85,17 @@ public class ProblemServerImpl implements ProblemServer {
         } catch (Exception e) {
             e.printStackTrace();
             return Response.fail("problem.delete.fail");
+        }
+    }
+
+    @Override
+    public Response<ProblemInfo> findByRand(ProblemFindByRandRequest request) {
+        try {
+            Problem problem = problemMapper.findByRand(request.getIds());
+            return Response.ok(problemApiConverter.get(problem));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.fail("problem.find.fail");
         }
     }
 }

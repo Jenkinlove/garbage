@@ -2,10 +2,7 @@ package com.xiong.problem.server;
 
 import com.xiong.common.utils.PageResult;
 import com.xiong.common.utils.Response;
-import com.xiong.problem.api.request.ProblemCreateRequest;
-import com.xiong.problem.api.request.ProblemDeleteRequest;
-import com.xiong.problem.api.request.ProblemPagingRequest;
-import com.xiong.problem.api.request.ProblemUpdateRequest;
+import com.xiong.problem.api.request.*;
 import com.xiong.problem.api.response.ProblemInfo;
 
 public interface ProblemServer {
@@ -18,4 +15,6 @@ public interface ProblemServer {
     Response<Boolean> update(ProblemUpdateRequest request);
 
     Response<Boolean> delete(ProblemDeleteRequest request);
+
+    Response<ProblemInfo> findByRand(ProblemFindByRandRequest request);
 }

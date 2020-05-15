@@ -15,4 +15,6 @@ public interface ProblemMapper extends Mapper<Problem> {
     int update(Problem problem);
 
     int deleteProblem(@Param("ids") Set<Long> ids);
+
+    Problem findByRand(@Param("ids") List<Long> ids);
 }

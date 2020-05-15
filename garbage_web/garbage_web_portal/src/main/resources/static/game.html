@@ -14,37 +14,43 @@
 
 </head>
 <body>
-<!--是否进入游戏界面-->
-<div class="gameEnter">
-    <span class="enter"></span>
-</div>
-<!--游戏界面-->
-<div class="container choice card">
-    <!--计时器-->
-    <div class="interval">
-        8s
+<div id="app">
+    <!--是否进入游戏界面-->
+    <div class="gameEnter">
+        <span class="enter" @click="getRandProblem()"></span>
     </div>
-    <!--问题-->
-    <div class="row choiceQuestion ">
-        <span class="iconfont icon-wenti"></span> 苹果是什么垃圾？
-    </div>
-    <!--选项A-->
-    <div class="row choiceAnswer alert alert-success" role="alert">
-        干垃圾 <span class="iconfont"></span>
+    <!--游戏界面-->
+    <div class="container choice card">
+        <!--计时器-->
+        <div class="interval">
+            8s
+        </div>
+        <!--问题-->
+        <div class="row choiceQuestion ">
+            <span class="iconfont icon-wenti"></span> {{problem.name}}
+        </div>
+        <!--选项A-->
+        <div class="row choiceAnswer alert alert-success" role="alert"
+             @click="choiceAnswer(problem.selectA, 0)">
+            {{problem.selectA}} <span class="iconfont"></span>
 
-    </div>
-    <!--选项B-->
-    <div class="row choiceAnswer alert alert-success" role="alert">
-        湿垃圾 <span class="iconfont"></span>
+        </div>
+        <!--选项B-->
+        <div class="row choiceAnswer alert alert-success" role="alert"
+             @click="choiceAnswer(problem.selectB, 1)">
+            {{problem.selectB}} <span class="iconfont"></span>
 
-    </div>
-    <!--选项C-->
-    <div class="row choiceAnswer alert alert-success" role="alert">
-        可回收垃圾 <span class="iconfont"></span>
-    </div>
-    <!--选项D-->
-    <div class="row choiceAnswer alert alert-success" role="alert">
-        有害垃圾 <span class="iconfont"></span>
+        </div>
+        <!--选项C-->
+        <div class="row choiceAnswer alert alert-success" role="alert"
+             @click="choiceAnswer(problem.selectC, 2)">
+            {{problem.selectC}} <span class="iconfont"></span>
+        </div>
+        <!--选项D-->
+        <div class="row choiceAnswer alert alert-success" role="alert"
+             @click="choiceAnswer(problem.selectD, 3)">
+            {{problem.selectD}} <span class="iconfont"></span>
+        </div>
     </div>
 </div>
 
@@ -55,6 +61,8 @@
 <!--提示弹窗大多通过popper.min.js实现-->
 <script src="js/popper.js"></script>
 <script src="js/bootstrap.js"></script>
+<script type="text/javascript" src="plugins/vue/vuejs-2.5.16.js"></script>
+<script type="text/javascript" src="plugins/vue/axios-0.18.0.js"></script>
 <script src="js/game.js"></script>
 </body>
 </html>

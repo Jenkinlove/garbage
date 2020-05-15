@@ -1,10 +1,7 @@
 package com.xiong.problem.service;
 
 import com.xiong.common.utils.PageResult;
-import com.xiong.problem.api.request.ProblemCreateRequest;
-import com.xiong.problem.api.request.ProblemDeleteRequest;
-import com.xiong.problem.api.request.ProblemPagingRequest;
-import com.xiong.problem.api.request.ProblemUpdateRequest;
+import com.xiong.problem.api.request.*;
 import com.xiong.problem.api.response.ProblemInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
@@ -30,4 +27,6 @@ public interface ProblemFeignClient {
     @PostMapping("/api/problem/delete")
     public Boolean delete(@SpringQueryMap ProblemDeleteRequest request);
 
+    @PostMapping("/api/problem/rand")
+    public ProblemInfo findByRand(@SpringQueryMap ProblemFindByRandRequest request);
 }
